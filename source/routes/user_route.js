@@ -4,7 +4,10 @@ import AuthController from '../controllers/Auth_controller';
 
 const userRouter = express.Router();
 
-userRouter.post('/register', AuthController.register)
+//auth route
+userRouter.post('/register', AuthController.register);
+userRouter.post('/login',AuthController.login);
+userRouter.post('/logout',AuthController.logout);
 
 
 
