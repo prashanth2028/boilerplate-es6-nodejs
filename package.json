@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel source -s -D -d library",
     "start": "npm run build && node --env-file=.env library/index.js",
-    "serve": "nodemon --exec babel-node --env-file=.env source/index.js",
+    "development": "nodemon --exec babel-node --env-file=.env source/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "prashanth",
