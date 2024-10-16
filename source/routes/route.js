@@ -1,6 +1,6 @@
 import app from "../config/express";
-import userRouter from "./user_route";
+import authRouter from "./auth_route";
 
-app.use('/api/v1',userRouter);
+app.use('/api/v1',authRouter);
 
 export default app;
