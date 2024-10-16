@@ -40,23 +40,25 @@ class AuthController {
 
             const data = user;            
 
-            if (!data) {
-                return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'No user exists with this email');
-            }
-            const correctPassword = await decrypt(req.body.password, data.password)
-
-            if(!correctPassword) {
-                return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'Password is incorrect, please try again');
-            }
             
             const session = await createSession(data);
 
             delete data.password;
+            
+            if (user.role === 'user') {
+                return response.successResponse(res, response.HttpStatus.OK, 'User logged in successfully', {
+                    ...data._doc,
+                    session_token: session.session_token
+                });
+            } else if (user.role === 'admin') {
+                return response.successResponse(res, response.HttpStatus.OK, 'Admin logged in successfully', {
+                    ...data._doc,
+                    session_token: session.session_token
+                });
+            } else {
+                return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'Invalid role');
+            }
 
-            return response.successResponse(res, response.HttpStatus.OK, 'User logged in successfully', {
-                ...data._doc,
-                session_token: session.session_token
-            });
             
         } catch (error) {
             console.error('Error during login:', error);
@@ -67,23 +69,20 @@ class AuthController {
     //logout function
     async logout(req, res) {
         try {
-            const authHeader = req.headers['authorization'];
-            
-            let sessionToken = authHeader && authHeader.split(' ')[1];            
-
-            if (!sessionToken) {
-                return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'No session token provided');
-            }
-
-            const session = await session_model.findOne({ session_token: sessionToken });
-
-            if (!session) {
-                return response.errorResponse(res, response.HttpStatus.UNAUTHORIZED, 'Invalid session token or user is not logged in');
-            }
-
-            session_model.deleteOne({ session_token: sessionToken });
-
-            return response.successResponse(res, response.HttpStatus.OK, 'User logged out successfully');
+                const user = req.user; // User attached by the middleware
+                const sessionToken = req.sessionToken;
+        
+                // Delete the session for both user and admin
+                await session_model.deleteOne({ session_token: sessionToken });
+        
+                // Check the user's role and return different responses
+                if (user.role === 'user') {
+                    return response.successResponse(res, response.HttpStatus.OK, 'User logged out successfully');
+                } else if (user.role === 'admin') {
+                    return response.successResponse(res, response.HttpStatus.OK, 'Admin logged out successfully');
+                } else {
+                    return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'Invalid role for logout');
+                }
         } catch (err) {
 
             return response.errorResponse(res, response.HttpStatus.INTERNAL_SERVER_ERROR, 'An error occurred during logout', err.message);
