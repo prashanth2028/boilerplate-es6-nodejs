@@ -3,6 +3,7 @@ import * as response from "../utlis/httputlis";
 import { decrypt } from "../utlis/crypto";
 import { createSession } from "../utlis/create_session";
 import session_model from "../models/session_model";
+import sendMail from "../utlis/sendMail";
 
 
 class AuthController {
@@ -16,6 +17,16 @@ class AuthController {
         
             user = new User({ name, email, password, role });
             await user.save();
+
+            if (user.role === "user"){
+                const subject = 'Welcome to Our Platform!';
+                const message = `Hi ${user.name}, Thank you for signing up!<br>`;
+                const htmlContent = `<b>Hi ${user.name},</b><br><br>Thank you for signing up to our platform!<br><br>Best regards,`;
+    
+                // Send welcome email
+                await sendMail(user.email, subject, message, htmlContent);     
+            }
+            
             return response.successResponse(res, response.HttpStatus.CREATED, 'User registered successfully', user);
         } catch (error) {
             return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'Error registering user', error.message);
