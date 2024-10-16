@@ -10,12 +10,12 @@ class AuthController {
 
     //register function
     async register(req, res) {
-        const { name, email, password, role } = req.body;
+        const { name, email, password } = req.body;
         try {
             let user = await User.findOne({ email });
             if (user) return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, "User already exists");
         
-            user = new User({ name, email, password, role });
+            user = new User({ name, email, password });
             await user.save();
 
             if (user.role === "user"){

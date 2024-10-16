@@ -5,7 +5,6 @@ const register = Joi.object({
     name: Joi.string().min(3).max(50).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
-    role: Joi.string().valid('user', 'admin').allow(null).optional() // Role can be nullable or one of the allowed values
 });
 
 const login = Joi.object({
