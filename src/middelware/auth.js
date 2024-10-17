@@ -1,7 +1,7 @@
 import passport from 'passport';
-import User from '../models/user_model';
+import User from '../models/user-model';
 import * as response from "../utlis/httputlis";
-import sessionModel from '../models/session_model';
+import sessionModel from '../models/session-model';
 
 class CustomUserAuthStrategy extends passport.Strategy {
     async authenticate(req, options) {

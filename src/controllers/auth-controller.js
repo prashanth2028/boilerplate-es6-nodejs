@@ -1,9 +1,8 @@
-import User from "../models/user_model";
-import * as response from "../utlis/httputlis";
-import { decrypt } from "../utlis/crypto";
-import { createSession } from "../utlis/create_session";
-import session_model from "../models/session_model";
-import sendMail from "../utlis/sendMail";
+import User from '../models/user-model';
+import * as response from '../utlis/httputlis';
+import { createSession } from '../utlis/createSession';
+import sessionModel from '../models/session-model';
+import sendMail from '../utlis/sendMail';
 
 
 class AuthController {
@@ -73,7 +72,7 @@ class AuthController {
                 const sessionToken = req.sessionToken;
         
                 // Delete the session for both user and admin
-                await session_model.deleteOne({ session_token: sessionToken });
+                await sessionModel.deleteOne({ session_token: sessionToken });
         
                 // Check the user's role and return different responses
                 if (user.role === 'user') {

@@ -1,7 +1,7 @@
-import express from "express";
-import compress from "compression";
-import cors from "cors";
-import helmet from "helmet";
+import express from 'express';
+import compress from 'compression';
+import cors from 'cors';
+import helmet from 'helmet';
 
 const app = express();
 

@@ -1,7 +1,7 @@
-import User from "../models/user_model";
-import { decrypt } from "../utlis/crypto";
-import * as response from "../utlis/httputlis";
-import sessionModel from "../models/session_model";
+import User from '../models/user-model';
+import { decrypt } from '../utlis/crypto';
+import * as response from '../utlis/httputlis';
+import sessionModel from '../models/session-model';
 
 
 class AuthMiddleware {

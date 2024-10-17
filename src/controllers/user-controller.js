@@ -1,11 +1,11 @@
-import user_model from "../models/user_model";
-import * as response from "../utlis/httputlis";
+import user from '../models/user-model';
+import * as response from '../utlis/httputlis';
 
 class UserController {
 
     async userLisr (req,res){
         try {
-            const users = await user_model.find({ role: 'user' });
+            const users = await user.find({ role: 'user' });
             return response.successResponse(res, response.HttpStatus.OK, 'Users List', users);
             
         } catch (error) {
