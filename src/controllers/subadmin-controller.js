@@ -1,5 +1,5 @@
-import user_model from "../models/user_model";
-import * as response from "../utlis/httputlis";
+import user from '../models/user-model';
+import * as response from '../utlis/httputlis';
 
 
 class subAdminControllers {
@@ -9,11 +9,11 @@ class subAdminControllers {
         const { name, email, password, role} = req.body;
 
         try {
-            let checkemail = await user_model.findOne({ email });
-            if (checkemail) return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, "subadmin already exists");
+            let checkemail = await user.findOne({ email });
+            if (checkemail) return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'subadmin already exists');
         
-            const user = await user_model.create({ name, email, password ,role});
-            return response.successResponse(res, response.HttpStatus.CREATED, 'subAdmin created successfully', user);
+            const subAdminCreate = await user.create({ name, email, password ,role});
+            return response.successResponse(res, response.HttpStatus.CREATED, 'subAdmin created successfully', subAdminCreate);
         } catch (error) {
             return response.errorResponse(res, response.HttpStatus.BAD_REQUEST, 'Error registering user', error.message);
         }
@@ -21,7 +21,7 @@ class subAdminControllers {
 
     async subAdminList (req,res){
         try {
-            const subAdmin = await user_model.find({ role: 'subadmin' });
+            const subAdmin = await user.find({ role: 'subadmin' });
             return response.successResponse(res, response.HttpStatus.OK, 'subAdmin List', subAdmin);
             
         } catch (error) {
@@ -32,7 +32,7 @@ class subAdminControllers {
 
     async subAdminUpdate (req,res){
         try {
-            const subAdmin = await user_model.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            const subAdmin = await user.findByIdAndUpdate(req.params.id, req.body, { new: true });
             if (!subAdmin) {
                 return response.errorResponse(res, response.HttpStatus.NOT_FOUND, 'subadmin not found');
             }
@@ -45,7 +45,7 @@ class subAdminControllers {
 
     async subAdminDelete (req,res){
         try {
-            const subAdmin = await user_model.findByIdAndDelete(req.params.id);
+            const subAdmin = await user.findByIdAndDelete(req.params.id);
             if (!subAdmin) {
                 return response.errorResponse(res, response.HttpStatus.NOT_FOUND, 'subAdmin not found');
             }

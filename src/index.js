@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import app from './routes/route';
-import { connectDB } from './config/DB_connection';
+import { connectDB } from './config/db-config';
 import { converter , notFound , handler} from './utlis/errorHandler';
 
 // load .env variables into process.env

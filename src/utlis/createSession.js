@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'; 
-import sessionModel from '../models/session_model'; 
+import sessionModel from '../models/session-model'; 
 
 export const createSession = async (data) => {
     try {
